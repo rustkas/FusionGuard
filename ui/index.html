@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FusionGuard - Disruption Risk Monitor</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FusionGuard</h1>
+            <p class="subtitle">Real-Time Disruption Risk Prediction</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="shot-select">Shot ID:</label>
+                <select id="shot-select">
+                    <option value="">Loading shots...</option>
+                </select>
+                <button id="refresh-shots">Refresh</button>
+            </div>
+            <div class="control-group">
+                <button id="auto-refresh-toggle">Auto-refresh: OFF</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chart-container">
+                <h2>Disruption Risk Over Time</h2>
+                <canvas id="risk-chart"></canvas>
+            </div>
+
+            <div class="info-panels">
+                <div class="panel">
+                    <h3>Top Risk Drivers</h3>
+                    <div id="top-drivers">
+                        <p class="placeholder">Select a shot to view risk drivers</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>Recommendations</h3>
+                    <div id="recommendations">
+                        <p class="placeholder">Select a shot to view recommendations</p>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>Events</h3>
+                    <div id="events">
+                        <p class="placeholder">Select a shot to view events</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

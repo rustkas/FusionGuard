@@ -1,0 +1,22 @@
+config_version: 1
+
+windows_ms: [50, 200]
+
+channels:
+  - ip
+  - ne
+  - dwdt
+  - prad
+  - h_alpha
+
+per_channel:
+  stats: [mean, std, min, max, slope, last, delta]
+  zscore:
+    enabled: true
+    baseline:
+      kind: ema
+      alpha: 0.01
+
+global:
+  include_missing_ratio: true
+  max_missing_ratio: 0.2

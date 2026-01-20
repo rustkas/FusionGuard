@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package telemetry.v1;
+
+option go_package = "github.com/fusionguard/gen/telemetry/v1;telemetryv1";
+
+message FeatureVector {
+  string shot_id = 1;
+  int64 ts_unix_ns = 2;
+  int32 window_ms = 3;
+  map<string, double> features = 4;
+  double missing_ratio = 5;
+}

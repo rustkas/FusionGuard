@@ -1,0 +1,156 @@
+{
+  "dashboard": {
+    "title": "FusionGuard System Dashboard",
+    "tags": ["fusionguard"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Ingestion Throughput",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(fusionguard_ingestor_points_total[5m])",
+            "legendFormat": "{{shot_id}} - {{status}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Ingestion Latency (p95)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(fusionguard_ingestor_latency_seconds_bucket[5m]))",
+            "legendFormat": "p95 latency"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Feature Computation Latency",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(fusionguard_feature_computation_latency_seconds_bucket[5m]))",
+            "legendFormat": "{{window_ms}}ms window"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+      },
+      {
+        "id": 4,
+        "title": "Inference Latency",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(fusionguard_inference_latency_seconds_bucket[5m]))",
+            "legendFormat": "{{horizon}} horizon"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "Risk Predictions",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(fusionguard_risk_predictions_total[5m])",
+            "legendFormat": "{{horizon}} - {{risk_level}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}
+      },
+      {
+        "id": 6,
+        "title": "Alerts Generated",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(fusionguard_alerts_total[5m])",
+            "legendFormat": "{{severity}} - {{horizon}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}
+      },
+      {
+        "id": 7,
+        "title": "API Request Rate",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(fusionguard_api_requests_total[5m])",
+            "legendFormat": "{{endpoint}} - {{method}} - {{status}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24}
+      },
+      {
+        "id": 8,
+        "title": "API Latency (p95)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(fusionguard_api_request_latency_seconds_bucket[5m]))",
+            "legendFormat": "{{endpoint}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24}
+      },
+      {
+        "id": 9,
+        "title": "Database Latency",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(fusionguard_ingestor_storage_latency_seconds_bucket[5m]))",
+            "legendFormat": "Ingestor - {{operation}}"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(fusionguard_inference_storage_latency_seconds_bucket[5m]))",
+            "legendFormat": "Inference - {{operation}}"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(fusionguard_api_db_query_latency_seconds_bucket[5m]))",
+            "legendFormat": "API - {{operation}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 32}
+      },
+      {
+        "id": 10,
+        "title": "Error Rates",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(fusionguard_ingestor_storage_errors_total[5m])",
+            "legendFormat": "Ingestor - {{operation}} - {{error_type}}"
+          },
+          {
+            "expr": "rate(fusionguard_feature_errors_total[5m])",
+            "legendFormat": "Feature - {{error_type}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 40}
+      },
+      {
+        "id": 11,
+        "title": "Model Version",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "fusionguard_model_version",
+            "legendFormat": "{{model_version}} / {{calibration_version}}"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 12, "x": 0, "y": 48}
+      }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 16,
+    "version": 1
+  }
+}

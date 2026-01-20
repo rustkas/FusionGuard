@@ -1,0 +1,25 @@
+[project]
+name = "fusionguard-trainer"
+version = "0.1.0"
+description = "Trainer pipeline for FusionGuard risk models"
+authors = ["FusionGuard Team <team@fusionguard.com>"]
+readme = "README.md"
+license = { text = "Apache-2.0" }
+dependencies = [
+    "numpy>=1.25",
+    "pandas>=2.1",
+    "scikit-learn>=1.4",
+    "scipy>=1.11",
+]
+dependencies-optional = [
+    "h5py>=3.10",
+    "netcdf4>=1.7",
+    "catboost>=1.2",
+    "lightgbm>=4.0",
+]
+[project.scripts]
+fusionguard-trainer = "fusionguard_trainer.train:main"
+
+[build-system]
+requires = ["setuptools>=65.5", "wheel"]
+build-backend = "setuptools.build_meta"

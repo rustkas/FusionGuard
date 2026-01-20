@@ -1,0 +1,30 @@
+config_version: 1
+
+rules:
+  - id: high_risk_fast
+    when:
+      all:
+        - field: risk_h50
+          op: gte
+          value: 0.85
+        - field: missing_ratio
+          op: lte
+          value: 0.25
+    then:
+      action: "reduce_heating_power"
+      confidence: 0.75
+      rationale: "High short-horizon disruption risk"
+
+  - id: radiation_spike
+    when:
+      all:
+        - field: feature.prad_mean_w50
+          op: gte
+          value: 1.8
+        - field: risk_h200
+          op: gte
+          value: 0.8
+    then:
+      action: "adjust_density"
+      confidence: 0.65
+      rationale: "Radiation increase correlates with instability"

@@ -1,0 +1,198 @@
+openapi: 3.0.3
+info:
+  title: FusionGuard API
+  version: 0.1.0
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: OK
+
+  /shots:
+    get:
+      summary: List shots
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [shots]
+                properties:
+                  shots:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Shot"
+
+  /shots/{shot_id}/series:
+    get:
+      summary: Get time series
+      parameters:
+        - in: path
+          name: shot_id
+          required: true
+          schema: { type: string }
+        - in: query
+          name: kind
+          required: true
+          schema:
+            type: string
+            enum: [risk, telemetry, features]
+        - in: query
+          name: from_unix_ns
+          required: false
+          schema: { type: integer, format: int64 }
+        - in: query
+          name: to_unix_ns
+          required: false
+          schema: { type: integer, format: int64 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/RiskSeries"
+                  - $ref: "#/components/schemas/TelemetrySeries"
+                  - $ref: "#/components/schemas/FeatureSeries"
+
+  /shots/{shot_id}/events:
+    get:
+      summary: List events (alerts, disruptions if known)
+      parameters:
+        - in: path
+          name: shot_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [events]
+                properties:
+                  events:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Event"
+
+  /shots/{shot_id}/explain:
+    get:
+      summary: Explain at time
+      parameters:
+        - in: path
+          name: shot_id
+          required: true
+          schema: { type: string }
+        - in: query
+          name: at_unix_ns
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Explanation"
+
+components:
+  schemas:
+    Shot:
+      type: object
+      required: [shot_id, started_unix_ns]
+      properties:
+        shot_id: { type: string }
+        started_unix_ns: { type: integer, format: int64 }
+        finished_unix_ns: { type: integer, format: int64 }
+
+    RiskPoint:
+      type: object
+      required: [ts_unix_ns, risk_h50, risk_h200, model_version, calibration_version]
+      properties:
+        ts_unix_ns: { type: integer, format: int64 }
+        risk_h50: { type: number, format: double, minimum: 0, maximum: 1 }
+        risk_h200: { type: number, format: double, minimum: 0, maximum: 1 }
+        model_version: { type: string }
+        calibration_version: { type: string }
+
+    RiskSeries:
+      type: object
+      required: [shot_id, points]
+      properties:
+        shot_id: { type: string }
+        points:
+          type: array
+          items: { $ref: "#/components/schemas/RiskPoint" }
+
+    TelemetrySeries:
+      type: object
+      required: [shot_id, channels]
+      properties:
+        shot_id: { type: string }
+        channels:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: object
+              required: [ts_unix_ns, value]
+              properties:
+                ts_unix_ns: { type: integer, format: int64 }
+                value: { type: number, format: double }
+
+    FeatureSeries:
+      type: object
+      required: [shot_id, vectors]
+      properties:
+        shot_id: { type: string }
+        vectors:
+          type: array
+          items:
+            type: object
+            required: [ts_unix_ns, window_ms, missing_ratio, features]
+            properties:
+              ts_unix_ns: { type: integer, format: int64 }
+              window_ms: { type: integer }
+              missing_ratio: { type: number, format: double }
+              features:
+                type: object
+                additionalProperties:
+                  type: number
+                  format: double
+
+    Event:
+      type: object
+      required: [ts_unix_ns, kind, message]
+      properties:
+        ts_unix_ns: { type: integer, format: int64 }
+        kind:
+          type: string
+          enum: [alert, disruption, info]
+        message: { type: string }
+        severity:
+          type: string
+          enum: [low, medium, high]
+
+    Explanation:
+      type: object
+      required: [ts_unix_ns, top_features]
+      properties:
+        ts_unix_ns: { type: integer, format: int64 }
+        top_features:
+          type: array
+          items:
+            type: object
+            required: [name, score]
+            properties:
+              name: { type: string }
+              score: { type: number, format: double }

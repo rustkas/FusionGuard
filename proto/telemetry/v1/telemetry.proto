@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package telemetry.v1;
+
+option go_package = "github.com/fusionguard/gen/telemetry/v1;telemetryv1";
+
+message ChannelSample {
+  string name = 1;
+  double value = 2;
+  SampleQuality quality = 3;
+}
+
+enum SampleQuality {
+  SAMPLE_QUALITY_UNSPECIFIED = 0;
+  SAMPLE_QUALITY_GOOD = 1;
+  SAMPLE_QUALITY_MISSING = 2;
+  SAMPLE_QUALITY_OUTLIER = 3;
+}
+
+message TelemetryPoint {
+  string shot_id = 1;
+  int64 ts_unix_ns = 2;
+  repeated ChannelSample channels = 3;
+}
+
+message IngestAck {
+  string shot_id = 1;
+  int64 accepted_points = 2;
+}
+
+service TelemetryIngestService {
+  rpc Ingest(stream TelemetryPoint) returns (IngestAck);
+}

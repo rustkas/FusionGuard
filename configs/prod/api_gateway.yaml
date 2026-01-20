@@ -1,0 +1,12 @@
+config_version: 1
+
+service:
+  name: fusionguard-api
+  http_addr: "0.0.0.0:80"
+
+storage:
+  postgres_dsn: "postgres://fusion:fusion@postgres:5432/fusionguard?sslmode=disable"
+
+features_cache:
+  enabled: true
+  ttl_seconds: 5

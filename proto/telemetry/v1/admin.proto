@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package telemetry.v1;
+
+option go_package = "github.com/fusionguard/gen/telemetry/v1;telemetryv1";
+
+message ModelInfo {
+  string model_version = 1;
+  string calibration_version = 2;
+}
+
+message ReloadModelRequest {
+  string model_version = 1;
+}
+
+message ReloadModelResponse {
+  ModelInfo active = 1;
+}
+
+service AdminService {
+  rpc GetModelInfo(ModelInfo) returns (ModelInfo);
+  rpc ReloadModel(ReloadModelRequest) returns (ReloadModelResponse);
+}

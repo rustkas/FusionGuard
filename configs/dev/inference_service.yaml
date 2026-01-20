@@ -1,0 +1,33 @@
+config_version: 1
+
+service:
+  name: fusionguard-inference
+  http_addr: "0.0.0.0:8083"
+
+nats:
+  url: "nats://nats:4222"
+  subject_features: "telemetry.features"
+  subject_risk: "telemetry.risk"
+  subject_alerts: "events.alerts"
+
+model:
+  provider: json
+  model_path: "deploy/models/dev/model_params.json"
+  model_version: "dev"
+  feature_order_path: "deploy/models/dev/feature_order.json"
+
+calibration:
+  kind: platt
+  params_path: "deploy/models/dev/calibration.json"
+  calibration_version: "dev"
+
+thresholds:
+  risk_h50_alert: 0.85
+  risk_h200_alert: 0.75
+
+storage:
+  postgres_dsn: "postgres://fusion:fusion@postgres:5432/fusionguard?sslmode=disable"
+  write_risk: true
+
+rules:
+  rules_path: "/configs/dev/rules.yaml"

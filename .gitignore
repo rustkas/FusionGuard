@@ -1,0 +1,120 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/bin/
+/dist/
+
+# Go
+*.mod.sum
+*.mod
+!go.mod
+*.sum
+!go.sum
+vendor/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker
+.dockerignore
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+*.out
+coverage/
+*.coverprofile
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Model artifacts (keep structure, ignore large files)
+deploy/models/*/*.onnx
+deploy/models/*/*.pkl
+deploy/models/*/*.h5
+deploy/models/*/*.pb
+
+# Data files (keep structure, ignore large datasets)
+data/raw/
+data/processed/
+*.csv
+*.h5
+*.hdf5
+*.nc
+*.netcdf
+!data/samples/*.csv
+
+# Build artifacts
+_build/
+*.o
+*.a
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Reports (generated)
+REPORT.md
+!REPORT.md.example
+
+# Prometheus data
+prometheus_data/
+
+# Grafana data
+grafana_data/
+
+# Postgres data
+postgres_data/
+
+# MinIO data
+minio_data/

@@ -1,0 +1,24 @@
+config_version: 1
+
+service:
+  name: fusionguard-ingestor
+  http_addr: "0.0.0.0:8081"
+  grpc_addr: "0.0.0.0:9091"
+
+nats:
+  url: "nats://nats:4222"
+  subject_raw: "telemetry.raw"
+
+sampling:
+  resample_hz: 1000
+  max_channels: 128
+  allowed_channels:
+    - ip
+    - ne
+    - dwdt
+    - prad
+    - h_alpha
+
+storage:
+  postgres_dsn: "postgres://fusion:fusion@postgres:5432/fusionguard?sslmode=disable"
+  write_raw: true
